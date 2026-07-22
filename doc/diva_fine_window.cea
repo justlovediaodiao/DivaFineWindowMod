@@ -1,0 +1,53 @@
+// Project DIVA Mega Mix+ FINE-window and score-upload patch for Cheat Engine.
+// Attach Cheat Engine to DivaMegaMix.exe before enabling this script.
+// Set this value in seconds. Supported range: 0.030 to 0.130.
+define(DIVA_FINE_WINDOW_SECONDS,0.100)
+
+[ENABLE]
+
+aobscanmodule(DIVA_FINE_HOOK,DivaMegaMix.exe,F3 0F 10 4A 18 0F 2F 89 84 32 01 00)
+assert(DIVA_FINE_HOOK,F3 0F 10 4A 18)
+alloc(DIVA_FINE_CAVE,256,DIVA_FINE_HOOK)
+
+aobscanmodule(DIVA_SCORE_UPLOAD,DivaMegaMix.exe,48 89 5C 24 08 55 56 57 48 83 EC 30 48 8B DA 48 8B E9 B9 40 00 00 00 E8 ?? ?? ?? ?? 48 8B F0 48 89 44 24 60 0F 57 C0 0F 11 00 0F 11 40 10 0F 11 40 20 0F 11)
+assert(DIVA_SCORE_UPLOAD,48)
+
+label(DIVA_FINE_RETURN)
+label(DIVA_FINE_POSITIVE)
+label(DIVA_FINE_NEGATIVE)
+
+registersymbol(DIVA_FINE_HOOK)
+registersymbol(DIVA_SCORE_UPLOAD)
+
+DIVA_FINE_CAVE:
+  movss xmm1,[DIVA_FINE_POSITIVE]
+  movss [rcx+00013274],xmm1
+  movss xmm1,[DIVA_FINE_NEGATIVE]
+  movss [rcx+00013278],xmm1
+  movss xmm1,[rdx+18]
+  jmp DIVA_FINE_RETURN
+
+align 4
+DIVA_FINE_POSITIVE:
+  dd (float)DIVA_FINE_WINDOW_SECONDS
+DIVA_FINE_NEGATIVE:
+  dd (float)-DIVA_FINE_WINDOW_SECONDS
+
+DIVA_FINE_HOOK:
+  jmp DIVA_FINE_CAVE
+DIVA_FINE_RETURN:
+
+DIVA_SCORE_UPLOAD:
+  db C3
+
+[DISABLE]
+
+DIVA_FINE_HOOK:
+  db F3 0F 10 4A 18
+
+DIVA_SCORE_UPLOAD:
+  db 48
+
+unregistersymbol(DIVA_FINE_HOOK)
+unregistersymbol(DIVA_SCORE_UPLOAD)
+dealloc(DIVA_FINE_CAVE)
