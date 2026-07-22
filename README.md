@@ -1,6 +1,6 @@
 # DIVA Fine Window
 
-An x64 DLL mod loaded by DIVA Mod Loader that adjusts the FINE timing window in *Hatsune Miku: Project DIVA Mega Mix+*.
+An x64 DLL mod loaded by DIVA Mod Loader that adjusts the FINE timing window in *Hatsune Miku: Project DIVA Mega Mix+*. It also prevents scores from being submitted to the leaderboard while preserving local score saving and leaderboard viewing.
 
 ## Supported Version
 
@@ -42,6 +42,12 @@ mods/
 
 DIVA Mod Loader must already be installed in the game's root directory.
 
+For a manual installation, open the DIVA Mod Loader `config.toml` next to `DivaMegaMix.exe` and add `"DIVA Fine Window"` to its `priority` list. Keep any existing mod names in the list, for example:
+
+```toml
+priority = ["...", "DIVA Fine Window"]
+```
+
 Alternatively, you can install the mod using DIVA Mod Manager. If you prefer not to install it as a mod, run the Cheat Engine script in the `doc` directory instead; it provides the same function.
 
 ## Configuration
@@ -61,7 +67,7 @@ Default timing windows:
 
 The allowed range is 30–130 ms. At 100 ms, inputs that would normally fall within the 70–100 ms SAFE range are classified as FINE first. To retain part of the SAFE range, use a value such as 80 or 90.
 
-Restart the game after changing the configuration.
+Restart the game after changing the configuration. Score submission to the leaderboard is always blocked while this mod is enabled.
 
 ## How It Works
 
