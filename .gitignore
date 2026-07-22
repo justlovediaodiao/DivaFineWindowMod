@@ -1,0 +1,6 @@
+/build/
+/package/
+*.log
+*.user
+*.suo
+.vs/

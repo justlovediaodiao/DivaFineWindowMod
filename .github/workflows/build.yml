@@ -1,0 +1,35 @@
+name: Build
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build-windows-x64:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure x64 Release
+        run: cmake -S . -B build -A x64
+
+      - name: Build
+        run: cmake --build build --config Release --parallel
+
+      - name: Stage mod
+        shell: pwsh
+        run: |
+          $modDir = Join-Path 'package' 'DIVA Fine Window'
+          New-Item -ItemType Directory -Force -Path $modDir | Out-Null
+          Copy-Item -LiteralPath 'build/Release/DivaFineWindow.dll' -Destination $modDir
+          Copy-Item -LiteralPath 'config.toml' -Destination $modDir
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: DivaFineWindow-x64
+          path: package
+          if-no-files-found: error

@@ -1,0 +1,14 @@
+enabled = true
+
+name = "DIVA Fine Window"
+description = "Configurable FINE judgement window for Mega Mix+"
+version = "1.0.0"
+date = "22.07.2026"
+author = "justl"
+
+include = ["."]
+dll = ["DivaFineWindow.dll"]
+
+# Default game value is 70 ms. Allowed range: 30-130 ms.
+# At 100 ms, the normal SAFE interval is fully covered by FINE.
+fine_window_ms = 100
